@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Little Surprise for Alex & Joanna</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,400..900,0..100,0..1;1,9..144,400..900,0..100,0..1&family=Caveat:wght@400;600&family=DM+Sans:wght@300;400;500;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --paper: #f6efe2;
+    --paper-2: #ece2cf;
+    --ink: #1f1a17;
+    --ink-soft: #5b4a40;
+    --rose: #d04a4a;
+    --rose-deep: #a33333;
+    --blush: #f4b6b0;
+    --sage: #8aa776;
+    --gold: #d6a24a;
+    --sky: #9ec8d6;
+    --hair: rgba(31, 26, 23, 0.18);
+    --hair-strong: rgba(31, 26, 23, 0.6);
+  }
+
+  html, body {
+    height: 100%;
+    width: 100%;
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* paper grain */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      radial-gradient(rgba(31,26,23,0.05) 1px, transparent 1px),
+      radial-gradient(rgba(31,26,23,0.03) 1px, transparent 1px);
+    background-size: 3px 3px, 7px 7px;
+    background-position: 0 0, 1px 2px;
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: multiply;
+  }
+
+  /* ─────────── PASSWORD LOCK ─────────── */
+  #lock-screen {
+    position: fixed; inset: 0; z-index: 1000;
+    background: var(--paper);
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  #lock-screen.hidden {
+    opacity: 0; transform: translateY(-20px); pointer-events: none;
+  }
+  .lock-masthead {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1rem 1.8rem;
+    border-bottom: 1px dashed var(--hair-strong);
+    font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
+  }
+  .lock-body {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 2rem; gap: 1.4rem;
+    position: relative;
+  }
+  .lock-body .doodle-spin {
+    font-family: 'Caveat', cursive;
+    color: var(--rose);
+    font-size: 1.8rem;
+    transform: rotate(-8deg);
+    margin-bottom: -0.5rem;
+  }
+  .lock-title {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'SOFT' 100, 'WONK' 1;
+    font-weight: 500;
+    font-size: clamp(2.4rem, 5.5vw, 4.5rem);
+    line-height: 0.95;
+    text-align: center;
+    letter-spacing: -0.02em;
+  }
+  .lock-title em {
+    font-style: italic;
+    color: var(--rose);
+    font-variation-settings: 'opsz' 144, 'SOFT' 100, 'WONK' 1;
+  }
+  .lock-sub {
+    font-family: 'Caveat', cursive;
+    font-size: 1.2rem;
+    color: var(--ink-soft);
+    text-align: center;
+  }
+  #password-form {
+    display: flex; flex-direction: column;
+    align-items: center; gap: 1.2rem;
+    width: 100%; max-width: 360px;
+    margin-top: 0.6rem;
+  }
+  #password-input {
+    width: 100%;
+    padding: 0.6rem 0.2rem;
+    border: none;
+    border-bottom: 2px dashed var(--hair-strong);
+    background: transparent;
+    font-size: 1.05rem;
+    text-align: center;
+    letter-spacing: 0.3em;
+    color: var(--ink);
+    outline: none;
+    font-family: 'DM Sans', sans-serif;
+    text-transform: uppercase;
+  }
+  #password-input::placeholder { color: var(--hair-strong); letter-spacing: 0.3em; font-size: 0.85rem; }
+  #password-input:focus { border-bottom-color: var(--rose); }
+  #password-input.shake { animation: shake 0.45s ease; border-bottom-color: var(--rose); }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); } 40% { transform: translateX(8px); }
+    60% { transform: translateX(-5px); } 80% { transform: translateX(5px); }
+  }
+  #unlock-btn {
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 0.85rem 2rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    transition: background 0.2s, transform 0.15s;
+    border-radius: 999px;
+    display: inline-flex; align-items: center; gap: 0.7rem;
+  }
+  #unlock-btn:hover { background: var(--rose); transform: rotate(-1.5deg); }
+  #unlock-btn .arrow { transition: transform 0.3s; }
+  #unlock-btn:hover .arrow { transform: translateX(4px); }
+  #error-msg {
+    font-family: 'Caveat', cursive;
+    font-size: 1.1rem; color: var(--rose);
+    min-height: 1rem; text-align: center;
+  }
+  .lock-footer {
+    padding: 0.8rem 1.8rem;
+    border-top: 1px dashed var(--hair-strong);
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ─────────── PETAL CANVAS ─────────── */
+  #petal-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 500; }
+
+  /* ─────────── MAIN ─────────── */
+  #main-content {
+    position: fixed; inset: 0;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    opacity: 0;
+    transition: opacity 1s ease;
+  }
+  #main-content.visible { opacity: 1; }
+
+  /* ─────────── MASTHEAD ─────────── */
+  .masthead {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 0.8rem 1.6rem;
+    border-bottom: 1px dashed var(--hair-strong);
+    background: var(--paper);
+    position: relative; z-index: 3;
+    transform: translateY(-100%);
+    animation: dropDown 0.7s cubic-bezier(0.65, 0, 0.35, 1) 0.1s forwards;
+  }
+  @keyframes dropDown { to { transform: translateY(0); } }
+  .masthead-left, .masthead-right {
+    display: flex; align-items: center; gap: 1rem;
+    font-size: 0.66rem; letter-spacing: 0.3em; text-transform: uppercase;
+  }
+  .masthead-right { justify-content: flex-end; }
+  .masthead-divider { color: var(--hair-strong); }
+  .masthead-center {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'SOFT' 60, 'WONK' 1;
+    font-size: 1.1rem;
+    letter-spacing: 0.02em;
+    font-weight: 500;
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .masthead-star {
+    display: inline-block; color: var(--rose);
+    animation: spin 30s linear infinite; transform-origin: center;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ─────────── STAGE ─────────── */
+  .stage {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse at 20% 30%, rgba(208, 74, 74, 0.07), transparent 50%),
+      radial-gradient(ellipse at 80% 70%, rgba(138, 167, 118, 0.08), transparent 50%),
+      var(--paper);
+  }
+
+  /* ── POLAROID PHOTOS ── */
+  .polaroid {
+    position: absolute;
+    background: white;
+    padding: 8px 8px 28px;
+    box-shadow:
+      0 1px 2px rgba(31,26,23,0.08),
+      0 8px 20px rgba(31,26,23,0.18),
+      0 20px 40px rgba(31,26,23,0.12);
+    cursor: pointer;
+    transition: transform 0.45s cubic-bezier(0.2, 0.85, 0.3, 1.1), box-shadow 0.4s;
+    z-index: 2;
+    will-change: transform;
+    --tilt: 0deg;
+    --tx: 0px;
+    --ty: 0px;
+    transform: translate(var(--tx), calc(var(--ty) - 30px)) rotate(0deg) scale(0.92);
+    opacity: 0;
+    animation: drop 0.8s cubic-bezier(0.2, 0.85, 0.3, 1.05) forwards;
+  }
+  @keyframes drop {
+    to {
+      transform: translate(var(--tx), var(--ty)) rotate(var(--tilt)) scale(1);
+      opacity: 1;
+    }
+  }
+  .polaroid img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    background: var(--paper-2);
+  }
+  .polaroid .cap {
+    position: absolute; bottom: 4px; left: 0; right: 0;
+    text-align: center;
+    font-family: 'Caveat', cursive;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+  }
+  .polaroid:hover {
+    transform: translate(var(--tx), calc(var(--ty) - 10px)) rotate(0deg) scale(1.05);
+    box-shadow:
+      0 1px 2px rgba(31,26,23,0.1),
+      0 16px 32px rgba(31,26,23,0.22),
+      0 30px 60px rgba(31,26,23,0.18);
+    z-index: 6;
+  }
+  .polaroid::before {
+    content: '';
+    position: absolute;
+    top: -10px; left: 50%; transform: translateX(-50%) rotate(-4deg);
+    width: 60px; height: 22px;
+    background: rgba(214, 162, 74, 0.55);
+    border: 1px dashed rgba(31,26,23, 0.2);
+    pointer-events: none;
+  }
+
+  /* layout positions — desktop */
+  .p1 { width: 190px; height: 230px; top: 5%;     left: 2.5%;  --tilt: -8deg; animation-delay: 0.35s; }
+  .p2 { width: 175px; height: 210px; bottom: 9%;  left: 2.5%;  --tilt:  6deg; animation-delay: 0.55s; }
+  .p3 { width: 195px; height: 235px; top: 5%;     right: 2.5%; --tilt:  7deg; animation-delay: 0.45s; }
+  .p4 { width: 175px; height: 210px; bottom: 9%;  right: 2.5%; --tilt: -5deg; animation-delay: 0.65s; }
+
+  /* HERO polaroid — the big centerpiece */
+  .p-hero {
+    position: absolute;
+    background: white;
+    padding: 10px 10px 36px;
+    box-shadow:
+      0 2px 4px rgba(31,26,23,0.1),
+      0 14px 28px rgba(31,26,23,0.22),
+      0 30px 60px rgba(31,26,23,0.18);
+    cursor: pointer;
+    width: 330px;
+    height: 400px;
+    top: 17%;
+    left: 50%;
+    z-index: 3;
+    transition: transform 0.5s cubic-bezier(0.2, 0.85, 0.3, 1.1), box-shadow 0.4s;
+    transform: translateX(-50%) translateY(-30px) rotate(0deg) scale(0.9);
+    opacity: 0;
+    animation: dropHero 0.95s cubic-bezier(0.2, 0.85, 0.3, 1.05) 0.75s forwards;
+    will-change: transform;
+  }
+  @keyframes dropHero {
+    to {
+      transform: translateX(-50%) translateY(0) rotate(-2deg) scale(1);
+      opacity: 1;
+    }
+  }
+  .p-hero img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    background: var(--paper-2);
+  }
+  .p-hero .cap {
+    position: absolute; bottom: 7px; left: 0; right: 0;
+    text-align: center;
+    font-family: 'Caveat', cursive;
+    font-size: 1.15rem;
+    color: var(--rose);
+  }
+  .p-hero:hover {
+    transform: translateX(-50%) translateY(-12px) rotate(0deg) scale(1.04);
+    box-shadow:
+      0 2px 4px rgba(31,26,23,0.12),
+      0 22px 44px rgba(31,26,23,0.26),
+      0 40px 80px rgba(31,26,23,0.2);
+    z-index: 7;
+  }
+  /* twin washi-tape strips for the hero, in rose */
+  .p-hero::before, .p-hero::after {
+    content: '';
+    position: absolute;
+    top: -12px;
+    width: 56px; height: 22px;
+    background: rgba(208, 74, 74, 0.5);
+    border: 1px dashed rgba(31,26,23, 0.18);
+    pointer-events: none;
+  }
+  .p-hero::before { left: 18px;  transform: rotate(-6deg); }
+  .p-hero::after  { right: 18px; transform: rotate(7deg);  }
+
+  /* ── TITLE ── */
+  .title-wrap {
+    position: absolute;
+    top: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 4;
+    pointer-events: none;
+  }
+  .title-eyebrow {
+    font-family: 'Caveat', cursive;
+    font-size: 1.4rem;
+    color: var(--rose);
+    transform: rotate(-3deg);
+    display: inline-block;
+    margin-bottom: -0.2rem;
+    opacity: 0;
+    animation: popIn 0.6s cubic-bezier(0.2, 1.5, 0.3, 1) 0.9s forwards;
+  }
+  @keyframes popIn {
+    from { opacity: 0; transform: rotate(-3deg) scale(0.6); }
+    to   { opacity: 1; transform: rotate(-3deg) scale(1); }
+  }
+  .title {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'SOFT' 100, 'WONK' 1;
+    font-weight: 600;
+    font-size: clamp(2.2rem, 5vw, 5rem);
+    line-height: 0.86;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    display: inline-block;
+    white-space: nowrap;
+  }
+  .title .alex   { display: inline-block; opacity: 0; transform: translateY(40px) rotate(-2deg); animation: jumpIn 0.7s cubic-bezier(0.2, 1.4, 0.3, 1) 1s forwards; }
+  .title .amp    {
+    display: inline-block;
+    color: var(--rose);
+    font-style: italic;
+    margin: 0 0.2em;
+    opacity: 0;
+    transform: scale(0.4) rotate(-20deg);
+    animation: bounceIn 0.7s cubic-bezier(0.2, 1.6, 0.3, 1) 1.15s forwards, wiggle 4s ease-in-out 2.5s infinite;
+  }
+  .title .joanna { display: inline-block; opacity: 0; transform: translateY(40px) rotate(2deg); animation: jumpIn 0.7s cubic-bezier(0.2, 1.4, 0.3, 1) 1.3s forwards; font-style: italic; }
+  @keyframes jumpIn { to { opacity: 1; transform: translateY(0) rotate(0); } }
+  @keyframes bounceIn { to { opacity: 1; transform: scale(1) rotate(-6deg); } }
+  @keyframes wiggle {
+    0%, 100% { transform: scale(1) rotate(-6deg); }
+    50%      { transform: scale(1.1) rotate(8deg); }
+  }
+  .title-sub {
+    font-family: 'Caveat', cursive;
+    font-size: 1.2rem;
+    color: var(--ink-soft);
+    margin-top: 0.4rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 1.5s forwards;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── DOODLES (SVG) ── */
+  .doodle {
+    position: absolute;
+    pointer-events: none;
+    color: var(--ink);
+    opacity: 0;
+    animation: popDoodle 0.6s cubic-bezier(0.2, 1.5, 0.3, 1) forwards;
+    z-index: 2;
+  }
+  @keyframes popDoodle {
+    from { opacity: 0; transform: scale(0.4) rotate(-15deg); }
+    to   { opacity: 1; transform: scale(1) rotate(var(--r, 0deg)); }
+  }
+  .d-rings   { top: 9%;     left: 22%;  width: 52px; --r: -8deg;  color: var(--gold); animation-delay: 1.6s; }
+  .d-rose    { top: 9%;     right: 22%; width: 44px; --r: 10deg;  color: var(--rose); animation-delay: 1.7s; }
+  .d-palm    { bottom: 6%;  left: 17%;  width: 56px; --r: -6deg;  color: var(--sage); animation-delay: 1.75s; }
+  .d-heart   { top: 36%;    left: 19%;  width: 32px; --r: 12deg;  color: var(--rose); animation-delay: 1.8s; }
+  .d-spark1  { top: 17%;    left: 38%;  width: 20px; --r: 0deg;   color: var(--gold); animation: popDoodle 0.5s ease 1.85s forwards, twinkle 2.4s ease-in-out 3s infinite; }
+  .d-spark2  { top: 17%;    right: 38%; width: 20px; --r: 0deg;   color: var(--rose); animation: popDoodle 0.5s ease 1.95s forwards, twinkle 2.4s ease-in-out 3.4s infinite; }
+  .d-arrow   { bottom: 32%; right: 18%; width: 60px; --r: 18deg;  color: var(--rose); animation-delay: 1.9s; }
+  @keyframes twinkle {
+    0%, 100% { opacity: 1; transform: scale(1) rotate(0); }
+    50%      { opacity: 0.4; transform: scale(0.7) rotate(45deg); }
+  }
+
+  /* ── SCRATCH CARD GAME ── */
+  .game-wrap {
+    position: absolute;
+    bottom: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 4;
+    width: min(380px, 42vw);
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1.7s forwards;
+  }
+  .game-label {
+    font-family: 'Caveat', cursive;
+    font-size: 1.2rem;
+    color: var(--rose);
+    text-align: center;
+    margin-bottom: 0.5rem;
+    transform: rotate(-1.5deg);
+  }
+  .game-label .pointer { display: inline-block; animation: bob 1.6s ease-in-out infinite; }
+  @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
+
+  .scratch-card {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow:
+      0 4px 14px rgba(31,26,23,0.15),
+      0 18px 40px rgba(31,26,23,0.18);
+    transform: rotate(-1deg);
+    background: white;
+  }
+  .reveal {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #fff5ec 0%, #ffe7d6 100%);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 1rem;
+    gap: 0.4rem;
+  }
+  .reveal-emoji { font-size: clamp(1.8rem, 3vw, 2.6rem); line-height: 1; }
+  .reveal-title {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'SOFT' 80, 'WONK' 1;
+    font-weight: 600;
+    font-size: clamp(1.1rem, 1.6vw, 1.5rem);
+    color: var(--ink);
+    line-height: 1;
+  }
+  .reveal-title em { color: var(--rose); font-style: italic; }
+  .reveal-desc {
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    max-width: 80%;
+    line-height: 1.4;
+  }
+  .download-btn {
+    margin-top: 0.4rem;
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    background: var(--ink);
+    color: var(--paper);
+    text-decoration: none;
+    padding: 0.65rem 1.2rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    font-weight: 500;
+    transition: background 0.3s, transform 0.2s;
+    pointer-events: none;
+    opacity: 0.4;
+  }
+  .download-btn.active {
+    pointer-events: auto;
+    opacity: 1;
+    animation: ctaWiggle 0.6s cubic-bezier(0.2, 1.5, 0.3, 1);
+  }
+  @keyframes ctaWiggle {
+    0%   { transform: scale(0.6) rotate(-8deg); }
+    60%  { transform: scale(1.1) rotate(3deg); }
+    100% { transform: scale(1) rotate(0); }
+  }
+  .download-btn:hover { background: var(--rose); transform: rotate(-1deg) scale(1.04); }
+  .download-btn .arrow { transition: transform 0.3s; }
+  .download-btn:hover .arrow { transform: translateX(4px); }
+
+  #scratch-canvas {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    cursor: grab;
+    touch-action: none;
+    transition: opacity 0.7s ease;
+  }
+  #scratch-canvas.gone { opacity: 0; pointer-events: none; }
+  #scratch-canvas:active { cursor: grabbing; }
+
+  /* ─────────── TICKER ─────────── */
+  .ticker {
+    border-top: 1px dashed var(--hair-strong);
+    background: var(--ink);
+    color: var(--paper);
+    overflow: hidden;
+    height: 36px;
+    display: flex; align-items: center;
+    transform: translateY(100%);
+    animation: dropUp 0.7s cubic-bezier(0.65, 0, 0.35, 1) 0.2s forwards;
+  }
+  @keyframes dropUp { to { transform: translateY(0); } }
+  .ticker-track {
+    display: flex; white-space: nowrap;
+    animation: ticker 36s linear infinite; will-change: transform;
+  }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .ticker-item {
+    font-size: 0.7rem; letter-spacing: 0.4em; text-transform: uppercase;
+    padding: 0 1.4rem;
+    display: inline-flex; align-items: center; gap: 1.4rem;
+  }
+  .ticker-item .star { color: var(--blush); }
+
+  /* ─────────── LIGHTBOX ─────────── */
+  .lightbox {
+    position: fixed; inset: 0;
+    background: rgba(15, 12, 10, 0.92);
+    display: none;
+    align-items: center; justify-content: center;
+    z-index: 900;
+    padding: 2rem;
+    cursor: pointer;
+  }
+  .lightbox.open { display: flex; animation: lbFade 0.3s ease; }
+  @keyframes lbFade { from { opacity: 0; } to { opacity: 1; } }
+  .lightbox img {
+    max-width: min(90vw, 800px);
+    max-height: 88vh;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    background: white; padding: 12px 12px 50px;
+    transform: rotate(-1deg);
+    animation: lbPop 0.4s cubic-bezier(0.2, 1.4, 0.3, 1);
+  }
+  @keyframes lbPop { from { transform: rotate(-1deg) scale(0.8); opacity: 0; } to { transform: rotate(-1deg) scale(1); opacity: 1; } }
+  .lightbox-cap {
+    position: absolute;
+    bottom: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-family: 'Caveat', cursive;
+    font-size: 1.4rem;
+    opacity: 0.85;
+  }
+
+  /* ─────────── CONFETTI ─────────── */
+  #confetti-canvas {
+    position: fixed; inset: 0; pointer-events: none; z-index: 700;
+  }
+
+  /* ─────────── RESPONSIVE ─────────── */
+  @media (max-width: 1100px) {
+    .p1 { width: 155px; height: 190px; }
+    .p2 { width: 145px; height: 175px; }
+    .p3 { width: 160px; height: 195px; }
+    .p4 { width: 145px; height: 175px; }
+    .p-hero { width: 270px; height: 330px; top: 18%; }
+    .game-wrap { width: min(330px, 44vw); }
+    .title { font-size: clamp(2rem, 4.4vw, 4.2rem); }
+  }
+  /* ─────────── MOBILE: dedicated vertical-flow design ─────────── */
+  @media (max-width: 760px) {
+    html, body {
+      overflow-x: hidden;
+      overflow-y: auto;
+      height: auto;
+    }
+
+    #main-content {
+      position: relative;
+      inset: auto;
+      min-height: 100vh;
+      height: auto;
+      display: block;
+    }
+
+    /* Stage becomes a stacked column, not a scrapbook */
+    .stage {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        "title  title"
+        "hero   hero"
+        "sub    sub"
+        "p1     p3"
+        "p2     p4"
+        "game   game";
+      gap: 0.9rem 0.7rem;
+      padding: 1.4rem 0.9rem 1.6rem;
+      overflow: visible;
+      min-height: 0;
+      align-items: start;
+    }
+
+    /* —— Title block —— */
+    .title-wrap {
+      grid-area: title;
+      position: static;
+      transform: none;
+      pointer-events: auto;
+      margin-bottom: 0.2rem;
+    }
+    .title {
+      font-size: clamp(2.6rem, 13vw, 4.2rem);
+      white-space: nowrap;
+    }
+    .title-eyebrow { font-size: 1rem; }
+    .title-sub {
+      grid-area: sub;
+      position: static;
+      font-size: 1.05rem;
+      margin-top: -0.4rem;
+    }
+
+    /* —— Mobile entrance keyframe (no translateX(-50%) tricks) —— */
+    @keyframes mobileDrop {
+      from { transform: translateY(20px) rotate(0deg) scale(0.94); opacity: 0; }
+      to   { transform: translateY(0)    rotate(var(--tilt, 0deg)) scale(1); opacity: 1; }
+    }
+
+    /* —— Hero polaroid: prominent, top of page —— */
+    .p-hero {
+      grid-area: hero;
+      position: relative;
+      top: auto; left: auto; right: auto; bottom: auto;
+      width: min(80vw, 300px);
+      height: min(102vw, 380px);
+      margin: 0.4rem auto 0.2rem;
+      --tilt: -2deg;
+      transform: translateY(20px) scale(0.94);
+      opacity: 0;
+      animation: mobileDrop 0.85s cubic-bezier(0.2, 0.85, 0.3, 1.05) 0.3s forwards;
+    }
+    .p-hero:hover,
+    .p-hero:active {
+      transform: translateY(-3px) rotate(-2deg) scale(1.02);
+    }
+    .p-hero .cap { font-size: 1.05rem; bottom: 9px; }
+    .p-hero::before, .p-hero::after { width: 48px; }
+
+    /* —— Corner photos: 2×2 grid —— */
+    .polaroid {
+      position: relative;
+      top: auto; bottom: auto; left: auto; right: auto;
+      width: 100%;
+      max-width: 175px;
+      height: auto;
+      aspect-ratio: 4 / 5;
+      margin: 0 auto;
+      --tx: 0px; --ty: 0px;
+      animation-name: mobileDrop;
+    }
+    .polaroid:hover,
+    .polaroid:active {
+      transform: translateY(-4px) rotate(0deg) scale(1.03);
+    }
+    .polaroid .cap { font-size: 0.9rem; bottom: 4px; }
+    .polaroid::before { width: 44px; height: 16px; top: -7px; }
+
+    .p1 { grid-area: p1; --tilt: -4deg; animation-delay: 0.45s; justify-self: end;   }
+    .p2 { grid-area: p2; --tilt:  3deg; animation-delay: 0.55s; justify-self: end;   }
+    .p3 { grid-area: p3; --tilt:  4deg; animation-delay: 0.5s;  justify-self: start; }
+    .p4 { grid-area: p4; --tilt: -3deg; animation-delay: 0.6s;  justify-self: start; }
+
+    /* —— Scratch game: full-width card —— */
+    .game-wrap {
+      grid-area: game;
+      position: relative;
+      bottom: auto; left: auto;
+      transform: none;
+      width: 100%;
+      max-width: 360px;
+      margin: 0.6rem auto 0;
+    }
+    .game-label { font-size: 1.15rem; }
+    .reveal-title { font-size: 1.15rem; }
+    .reveal-desc { font-size: 0.75rem; max-width: 88%; }
+    .download-btn { padding: 0.7rem 1.1rem; font-size: 0.65rem; letter-spacing: 0.22em; }
+
+    .doodle { display: none; }
+
+    /* —— Sticky masthead + ticker bookend the scroll —— */
+    .masthead {
+      padding: 0.55rem 0.9rem;
+      position: sticky; top: 0;
+      z-index: 20;
+    }
+    .masthead-left, .masthead-right { font-size: 0.5rem; gap: 0.4rem; letter-spacing: 0.18em; }
+    .masthead-center { font-size: 0.8rem; gap: 0.4rem; }
+
+    .ticker {
+      position: sticky;
+      bottom: 0;
+      z-index: 20;
+      height: 32px;
+    }
+    .ticker-item { font-size: 0.6rem; letter-spacing: 0.3em; padding: 0 1rem; gap: 1rem; }
+
+    .lightbox img { max-width: 92vw; padding: 8px 8px 36px; }
+  }
+
+  /* Very small phones (<360px) — pull title down a notch */
+  @media (max-width: 360px) {
+    .title { font-size: clamp(2.2rem, 12vw, 3.4rem); }
+    .stage { padding: 1.2rem 0.7rem 1.4rem; }
+    .polaroid { max-width: 145px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    .ticker-track { animation: ticker 60s linear infinite; }
+    .masthead-star { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─────────── PASSWORD LOCK ─────────── -->
+<div id="lock-screen">
+  <header class="lock-masthead">
+    <span>Members Only</span>
+    <span>Vol. I · N° 01</span>
+  </header>
+
+  <div class="lock-body">
+    <span class="doodle-spin">psst — secret inside</span>
+    <h1 class="lock-title">A little<br><em>surprise</em> is waiting</h1>
+    <p class="lock-sub">drop the magic word below ↓</p>
+    <form id="password-form" onsubmit="checkPassword(event)">
+      <input type="password" id="password-input" placeholder="••••••••" autocomplete="off" autofocus />
+      <button type="submit" id="unlock-btn">
+        <span>Open it</span>
+        <span class="arrow">→</span>
+      </button>
+      <p id="error-msg"></p>
+    </form>
+  </div>
+
+  <footer class="lock-footer">
+    <span>8reasons · 2026</span>
+    <span>For Alex &amp; Joanna</span>
+  </footer>
+</div>
+
+<!-- ─────────── PETAL CANVAS ─────────── -->
+<canvas id="petal-canvas"></canvas>
+<canvas id="confetti-canvas"></canvas>
+
+<!-- ─────────── MAIN ─────────── -->
+<div id="main-content" aria-hidden="true">
+
+  <header class="masthead">
+    <div class="masthead-left">
+      <span>8reasons</span>
+      <span class="masthead-divider">/</span>
+      <span>Vol. I</span>
+      <span class="masthead-divider">/</span>
+      <span>N° 01</span>
+    </div>
+    <div class="masthead-center">
+      <span class="masthead-star">✦</span>
+      <span>The Engagement Edition</span>
+      <span class="masthead-star">✦</span>
+    </div>
+    <div class="masthead-right">
+      <span>Special Issue</span>
+      <span class="masthead-divider">/</span>
+      <span id="masthead-date">April 2026</span>
+    </div>
+  </header>
+
+  <main class="stage" id="stage">
+
+    <!-- TITLE -->
+    <div class="title-wrap">
+      <span class="title-eyebrow">~ from your team, with love ~</span>
+      <h1 class="title">
+        <span class="alex">Alex</span><span class="amp">&amp;</span><span class="joanna">Joanna</span>
+      </h1>
+      <p class="title-sub">engaged &amp; adored ♡ congratulations</p>
+    </div>
+
+    <!-- HERO POLAROID — the big centerpiece -->
+    <div class="polaroid p-hero" data-src="photo-together.jpg" data-cap="♡ the happy couple ♡">
+      <img src="photo-together.jpg" alt="Alex and Joanna" />
+      <span class="cap">♡ the happy couple ♡</span>
+    </div>
+
+    <!-- CORNER POLAROIDS -->
+    <div class="polaroid p1" data-src="photo-proposal.jpg" data-cap="she said yes ✨">
+      <img src="photo-proposal.jpg" alt="The proposal" />
+      <span class="cap">she said yes ✨</span>
+    </div>
+    <div class="polaroid p2" data-src="photo-roses.jpg" data-cap="all the roses">
+      <img src="photo-roses.jpg" alt="Roses" />
+      <span class="cap">all the roses</span>
+    </div>
+    <div class="polaroid p3" data-src="IMG_0620.jpg" data-cap="that kiss !!">
+      <img src="IMG_0620.jpg" alt="The kiss" />
+      <span class="cap">that kiss !!</span>
+    </div>
+    <div class="polaroid p4" data-src="File.png" data-cap="punta cana ~">
+      <img src="File.png" alt="By the water" />
+      <span class="cap">punta cana ~</span>
+    </div>
+
+    <!-- DOODLES -->
+    <svg class="doodle d-rings" viewBox="0 0 60 40" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+      <circle cx="22" cy="22" r="14"/>
+      <circle cx="38" cy="22" r="14"/>
+      <path d="M22 5 L18 1 L26 1 Z" fill="currentColor"/>
+    </svg>
+    <svg class="doodle d-rose" viewBox="0 0 50 50" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+      <circle cx="25" cy="20" r="3"/>
+      <path d="M25 17 q-5 -3 -7 2 q-2 5 4 6"/>
+      <path d="M25 17 q5 -3 7 2 q2 5 -4 6"/>
+      <path d="M22 25 q-6 -1 -7 5 q-1 5 6 5"/>
+      <path d="M28 25 q6 -1 7 5 q1 5 -6 5"/>
+      <path d="M25 33 v14"/>
+      <path d="M25 40 q-4 2 -3 6"/>
+      <path d="M25 42 q4 -1 5 3"/>
+    </svg>
+    <svg class="doodle d-palm" viewBox="0 0 70 70" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+      <path d="M35 68 q-2 -22 0 -38"/>
+      <path d="M35 30 q-12 -10 -22 -8 q5 -2 12 -2 q-10 -3 -16 -10 q9 4 18 6"/>
+      <path d="M35 30 q12 -10 22 -8 q-5 -2 -12 -2 q10 -3 16 -10 q-9 4 -18 6"/>
+      <path d="M35 30 q-2 -14 -8 -22 q4 4 6 10 q-3 -10 -2 -18 q4 7 5 14"/>
+      <path d="M35 30 q2 -14 8 -22 q-4 4 -6 10 q3 -10 2 -18 q-4 7 -5 14"/>
+    </svg>
+    <svg class="doodle d-heart" viewBox="0 0 40 36" fill="currentColor">
+      <path d="M20 32 C 4 22, 0 12, 8 6 C 14 2, 18 6, 20 10 C 22 6, 26 2, 32 6 C 40 12, 36 22, 20 32 Z"/>
+    </svg>
+    <svg class="doodle d-spark1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <path d="M12 2 v8 M12 14 v8 M2 12 h8 M14 12 h8"/>
+    </svg>
+    <svg class="doodle d-spark2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <path d="M12 2 v8 M12 14 v8 M2 12 h8 M14 12 h8"/>
+    </svg>
+    <svg class="doodle d-arrow" viewBox="0 0 80 50" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 8 q15 30 35 30 t35 -10"/>
+      <path d="M68 32 l8 -4 l-2 9"/>
+    </svg>
+
+    <!-- SCRATCH CARD GAME -->
+    <div class="game-wrap">
+      <p class="game-label">scratch to reveal your gift <span class="pointer">↓</span></p>
+      <div class="scratch-card" id="scratch-card">
+        <div class="reveal">
+          <div class="reveal-emoji">🧖‍♀️ 💆 ✨</div>
+          <h3 class="reveal-title">A <em>Spa Retreat</em> for two</h3>
+          <p class="reveal-desc">Some well-deserved relaxation, on us. You both earned it.</p>
+          <a href="spa-coupon.pdf" download="Alex-Joanna-Spa-Gift.pdf" class="download-btn" id="download-btn">
+            <span>Download Coupon</span>
+            <span class="arrow">→</span>
+          </a>
+        </div>
+        <canvas id="scratch-canvas"></canvas>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="ticker" aria-hidden="true">
+    <div class="ticker-track" id="ticker-track"></div>
+  </footer>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <img id="lightbox-img" src="" alt="" />
+  <div class="lightbox-cap" id="lightbox-cap"></div>
+</div>
+
+<script>
+  // ─────────── PASSWORD ───────────
+  const SECRET = 'alexjoanna2025';
+  function checkPassword(e) {
+    e.preventDefault();
+    const input = document.getElementById('password-input');
+    const err = document.getElementById('error-msg');
+    if (input.value.trim().toLowerCase() === SECRET) {
+      err.textContent = '';
+      document.getElementById('lock-screen').classList.add('hidden');
+      const main = document.getElementById('main-content');
+      setTimeout(() => {
+        main.classList.add('visible');
+        main.setAttribute('aria-hidden', 'false');
+        startPetals();
+        initScratch();
+      }, 500);
+    } else {
+      err.textContent = 'nope, try again 🌸';
+      input.classList.add('shake');
+      input.value = '';
+      setTimeout(() => input.classList.remove('shake'), 500);
+    }
+  }
+
+  // ─────────── DATE ───────────
+  (function setDate() {
+    const d = new Date();
+    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    document.getElementById('masthead-date').textContent = months[d.getMonth()] + ' ' + d.getFullYear();
+  })();
+
+  // ─────────── TICKER ───────────
+  (function buildTicker() {
+    const track = document.getElementById('ticker-track');
+    const items = [
+      'Congratulations Alex &amp; Joanna',
+      'Eight Reasons To Celebrate',
+      'She Said Yes',
+      'A Special Edition',
+      'Punta Cana · 2026',
+      'With Love From Your Team',
+    ];
+    const star = '<span class="star">✦</span>';
+    const html = items.map(t => `<span class="ticker-item">${t}${star}</span>`).join('');
+    track.innerHTML = html + html;
+  })();
+
+  // ─────────── PETALS ───────────
+  const canvas = document.getElementById('petal-canvas');
+  const ctx = canvas.getContext('2d');
+  let petals = [];
+  let petalsAnimating = false;
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const cc = document.getElementById('confetti-canvas');
+    cc.width = window.innerWidth;
+    cc.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  function rand(a, b) { return a + Math.random() * (b - a); }
+
+  function createPetal() {
+    return {
+      x: rand(0, canvas.width), y: -20,
+      size: rand(5, 11),
+      sx: rand(-0.7, 0.7), sy: rand(0.6, 1.6),
+      rot: rand(0, Math.PI * 2),
+      rs: rand(-0.025, 0.025),
+      op: rand(0.3, 0.65),
+      color: ['#f4b6b0','#d04a4a','#d6a24a','#8aa776','#c87a72'][Math.floor(Math.random()*5)],
+      life: 0, maxLife: rand(280, 480),
+    };
+  }
+  function drawPetal(p) {
+    ctx.save();
+    ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+    ctx.globalAlpha = p.op * (1 - p.life / p.maxLife);
+    ctx.fillStyle = p.color;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, p.size * 0.5, p.size, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+  function tickPetals() {
+    if (!petalsAnimating) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    petals.forEach(p => {
+      p.x += p.sx; p.y += p.sy; p.rot += p.rs;
+      p.sx += Math.sin(p.life * 0.04) * 0.03; p.life++;
+      drawPetal(p);
+    });
+    petals = petals.filter(p => p.life < p.maxLife && p.y < canvas.height + 30);
+    if (petals.length === 0 && !petalSpawning) {
+      petalsAnimating = false;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      return;
+    }
+    requestAnimationFrame(tickPetals);
+  }
+  let petalSpawning = false;
+  function startPetals() {
+    petalsAnimating = true; petalSpawning = true;
+    tickPetals();
+    let bursts = 0;
+    const t = setInterval(() => {
+      for (let i = 0; i < 2; i++) petals.push(createPetal());
+      bursts++;
+      if (bursts > 32) { clearInterval(t); petalSpawning = false; }
+    }, 280);
+  }
+
+  // ─────────── LIGHTBOX ───────────
+  document.querySelectorAll('.polaroid').forEach(el => {
+    el.addEventListener('click', () => {
+      const src = el.dataset.src;
+      const cap = el.dataset.cap || '';
+      const lb = document.getElementById('lightbox');
+      document.getElementById('lightbox-img').src = src;
+      document.getElementById('lightbox-cap').textContent = cap;
+      lb.classList.add('open');
+    });
+  });
+  function closeLightbox(e) {
+    document.getElementById('lightbox').classList.remove('open');
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+
+  // ─────────── SCRATCH CARD GAME ───────────
+  let scratchCanvas, sctx, isScratching = false, scratched = false;
+  let lastPoint = null;
+
+  function initScratch() {
+    scratchCanvas = document.getElementById('scratch-canvas');
+    sctx = scratchCanvas.getContext('2d');
+    sizeScratch();
+    paintScratch();
+
+    const start = (e) => { isScratching = true; lastPoint = getPoint(e); e.preventDefault(); };
+    const move = (e) => {
+      if (!isScratching || scratched) return;
+      const p = getPoint(e);
+      scratchAt(lastPoint, p);
+      lastPoint = p;
+      e.preventDefault();
+    };
+    const end = () => {
+      isScratching = false; lastPoint = null;
+      checkScratched();
+    };
+
+    scratchCanvas.addEventListener('mousedown', start);
+    scratchCanvas.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', end);
+    scratchCanvas.addEventListener('touchstart', start, { passive: false });
+    scratchCanvas.addEventListener('touchmove', move, { passive: false });
+    scratchCanvas.addEventListener('touchend', end);
+
+    window.addEventListener('resize', () => {
+      if (scratched) return;
+      sizeScratch(); paintScratch();
+    });
+  }
+
+  function sizeScratch() {
+    const dpr = window.devicePixelRatio || 1;
+    const r = scratchCanvas.getBoundingClientRect();
+    scratchCanvas.width = Math.floor(r.width * dpr);
+    scratchCanvas.height = Math.floor(r.height * dpr);
+    sctx.setTransform(1, 0, 0, 1, 0, 0);
+    sctx.scale(dpr, dpr);
+    scratchCanvas._w = r.width;
+    scratchCanvas._h = r.height;
+  }
+
+  function paintScratch() {
+    const w = scratchCanvas._w, h = scratchCanvas._h;
+    // base coating
+    const grad = sctx.createLinearGradient(0, 0, w, h);
+    grad.addColorStop(0, '#d04a4a');
+    grad.addColorStop(0.5, '#a33333');
+    grad.addColorStop(1, '#d6a24a');
+    sctx.fillStyle = grad;
+    sctx.fillRect(0, 0, w, h);
+    // dot pattern
+    sctx.fillStyle = 'rgba(255,255,255,0.08)';
+    for (let y = 0; y < h; y += 8) {
+      for (let x = 0; x < w; x += 8) {
+        sctx.beginPath();
+        sctx.arc(x + (y % 16 === 0 ? 0 : 4), y, 1, 0, Math.PI * 2);
+        sctx.fill();
+      }
+    }
+    // text
+    sctx.fillStyle = 'rgba(255,255,255,0.92)';
+    sctx.font = '600 22px "Caveat", cursive';
+    sctx.textAlign = 'center';
+    sctx.textBaseline = 'middle';
+    sctx.fillText('✨ scratch here ✨', w / 2, h / 2 - 8);
+    sctx.font = '500 11px "DM Sans", sans-serif';
+    sctx.fillStyle = 'rgba(255,255,255,0.7)';
+    sctx.fillText('drag to reveal your gift', w / 2, h / 2 + 14);
+    // border accent
+    sctx.strokeStyle = 'rgba(255,255,255,0.25)';
+    sctx.lineWidth = 2;
+    sctx.setLineDash([6, 6]);
+    sctx.strokeRect(8, 8, w - 16, h - 16);
+    sctx.setLineDash([]);
+  }
+
+  function getPoint(e) {
+    const r = scratchCanvas.getBoundingClientRect();
+    const t = e.touches ? e.touches[0] : e;
+    return { x: t.clientX - r.left, y: t.clientY - r.top };
+  }
+
+  function scratchAt(from, to) {
+    sctx.globalCompositeOperation = 'destination-out';
+    sctx.lineCap = 'round';
+    sctx.lineJoin = 'round';
+    sctx.lineWidth = 36;
+    sctx.beginPath();
+    sctx.moveTo(from.x, from.y);
+    sctx.lineTo(to.x, to.y);
+    sctx.stroke();
+    // also a circle at endpoint for chunkiness
+    sctx.beginPath();
+    sctx.arc(to.x, to.y, 22, 0, Math.PI * 2);
+    sctx.fill();
+    sctx.globalCompositeOperation = 'source-over';
+
+    // throttled progress check
+    if (!scratchAt._t || Date.now() - scratchAt._t > 200) {
+      scratchAt._t = Date.now();
+      checkScratched();
+    }
+  }
+
+  function checkScratched() {
+    if (scratched) return;
+    const w = scratchCanvas.width, h = scratchCanvas.height;
+    const stride = 8;
+    const data = sctx.getImageData(0, 0, w, h).data;
+    let cleared = 0, total = 0;
+    for (let y = 0; y < h; y += stride) {
+      for (let x = 0; x < w; x += stride) {
+        const i = (y * w + x) * 4 + 3; // alpha channel
+        if (data[i] < 30) cleared++;
+        total++;
+      }
+    }
+    const pct = cleared / total;
+    if (pct > 0.42) {
+      scratched = true;
+      scratchCanvas.classList.add('gone');
+      document.getElementById('download-btn').classList.add('active');
+      celebrate();
+    }
+  }
+
+  // ─────────── CONFETTI ───────────
+  function celebrate() {
+    const cc = document.getElementById('confetti-canvas');
+    const cctx = cc.getContext('2d');
+    const card = document.getElementById('scratch-card').getBoundingClientRect();
+    const cx = card.left + card.width / 2;
+    const cy = card.top + card.height / 2;
+    const colors = ['#d04a4a','#d6a24a','#8aa776','#f4b6b0','#9ec8d6','#1f1a17'];
+    const parts = [];
+    for (let i = 0; i < 110; i++) {
+      const angle = rand(0, Math.PI * 2);
+      const speed = rand(4, 11);
+      parts.push({
+        x: cx, y: cy,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed - 4,
+        g: 0.22,
+        size: rand(4, 9),
+        rot: rand(0, Math.PI * 2),
+        rs: rand(-0.2, 0.2),
+        color: colors[Math.floor(Math.random() * colors.length)],
+        life: 0, maxLife: rand(80, 130),
+        shape: Math.random() < 0.5 ? 'rect' : 'circle',
+      });
+    }
+    let raf;
+    function frame() {
+      cctx.clearRect(0, 0, cc.width, cc.height);
+      let alive = 0;
+      parts.forEach(p => {
+        if (p.life >= p.maxLife) return;
+        p.x += p.vx; p.y += p.vy; p.vy += p.g;
+        p.vx *= 0.99;
+        p.rot += p.rs; p.life++;
+        cctx.save();
+        cctx.translate(p.x, p.y); cctx.rotate(p.rot);
+        cctx.globalAlpha = Math.max(0, 1 - p.life / p.maxLife);
+        cctx.fillStyle = p.color;
+        if (p.shape === 'rect') {
+          cctx.fillRect(-p.size / 2, -p.size, p.size, p.size * 1.6);
+        } else {
+          cctx.beginPath();
+          cctx.arc(0, 0, p.size * 0.6, 0, Math.PI * 2);
+          cctx.fill();
+        }
+        cctx.restore();
+        alive++;
+      });
+      if (alive > 0) raf = requestAnimationFrame(frame);
+      else cctx.clearRect(0, 0, cc.width, cc.height);
+    }
+    frame();
+  }
+</script>
+</body>
+</html>
