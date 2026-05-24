@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
 <title>A Little Surprise for Alex & Joanna</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,13 +13,15 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --paper: #f6efe2;
-    --paper-2: #ece2cf;
+    --paper: #f7efe0;
+    --paper-2: #ede2cc;
     --ink: #1f1a17;
     --ink-soft: #5b4a40;
-    --rose: #d04a4a;
-    --rose-deep: #a33333;
+    --rose: #c14a5e;
+    --rose-deep: #8e2f44;
+    --rose-soft: #e8a9b1;
     --blush: #f4b6b0;
+    --peach: #f3d8c2;
     --sage: #8aa776;
     --gold: #d6a24a;
     --sky: #9ec8d6;
@@ -210,8 +213,10 @@
     position: relative;
     overflow: hidden;
     background:
-      radial-gradient(ellipse at 20% 30%, rgba(208, 74, 74, 0.07), transparent 50%),
-      radial-gradient(ellipse at 80% 70%, rgba(138, 167, 118, 0.08), transparent 50%),
+      radial-gradient(ellipse 820px 520px at 50% 38%, rgba(193, 74, 94, 0.07), transparent 70%),
+      radial-gradient(ellipse 600px 400px at 50% 60%, rgba(243, 216, 194, 0.35), transparent 75%),
+      radial-gradient(ellipse at 20% 30%, rgba(193, 74, 94, 0.06), transparent 50%),
+      radial-gradient(ellipse at 80% 70%, rgba(138, 167, 118, 0.06), transparent 50%),
       var(--paper);
   }
 
@@ -285,7 +290,8 @@
     box-shadow:
       0 2px 4px rgba(31,26,23,0.1),
       0 14px 28px rgba(31,26,23,0.22),
-      0 30px 60px rgba(31,26,23,0.18);
+      0 30px 60px rgba(142, 47, 68, 0.2),
+      0 0 140px rgba(243, 216, 194, 0.55);
     cursor: pointer;
     width: 330px;
     height: 400px;
@@ -400,6 +406,36 @@
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(10px); }
     to   { opacity: 1; transform: translateY(0); }
+  }
+  .title-stamp {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    margin-top: 0.85rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 1.65s forwards;
+  }
+  .stamp-line {
+    display: inline-block;
+    width: 56px;
+    height: 1px;
+    background: var(--rose);
+    opacity: 0.5;
+  }
+  .stamp-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.38em;
+    color: var(--rose);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .stamp-text .stamp-heart {
+    color: var(--rose);
+    margin: 0 0.15em;
+    letter-spacing: 0;
   }
 
   /* ── DOODLES (SVG) ── */
@@ -802,13 +838,13 @@
     </div>
     <div class="masthead-center">
       <span class="masthead-star">✦</span>
-      <span>The Engagement Edition</span>
+      <span>The Wedding Edition</span>
       <span class="masthead-star">✦</span>
     </div>
     <div class="masthead-right">
       <span>Special Issue</span>
       <span class="masthead-divider">/</span>
-      <span id="masthead-date">April 2026</span>
+      <span id="masthead-date">The Big Day · May 2026</span>
     </div>
   </header>
 
@@ -820,7 +856,12 @@
       <h1 class="title">
         <span class="alex">Alex</span><span class="amp">&amp;</span><span class="joanna">Joanna</span>
       </h1>
-      <p class="title-sub">engaged &amp; adored ♡ congratulations</p>
+      <p class="title-sub">tying the knot ♡ congratulations</p>
+      <div class="title-stamp" aria-hidden="true">
+        <span class="stamp-line"></span>
+        <span class="stamp-text">Peru<span class="stamp-heart"> · </span>May<span class="stamp-heart"> · </span>MMXXVI</span>
+        <span class="stamp-line"></span>
+      </div>
     </div>
 
     <!-- HERO POLAROID — the big centerpiece -->
@@ -842,9 +883,9 @@
       <img src="IMG_0620.jpg" alt="The kiss" />
       <span class="cap">that kiss !!</span>
     </div>
-    <div class="polaroid p4" data-src="File.png" data-cap="punta cana ~">
+    <div class="polaroid p4" data-src="File.png" data-cap="where it began ~">
       <img src="File.png" alt="By the water" />
-      <span class="cap">punta cana ~</span>
+      <span class="cap">where it began ~</span>
     </div>
 
     <!-- DOODLES -->
@@ -873,11 +914,11 @@
     <svg class="doodle d-heart" viewBox="0 0 40 36" fill="currentColor">
       <path d="M20 32 C 4 22, 0 12, 8 6 C 14 2, 18 6, 20 10 C 22 6, 26 2, 32 6 C 40 12, 36 22, 20 32 Z"/>
     </svg>
-    <svg class="doodle d-spark1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-      <path d="M12 2 v8 M12 14 v8 M2 12 h8 M14 12 h8"/>
+    <svg class="doodle d-spark1" viewBox="0 0 24 22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 19 C 4 13, 1 7, 5 4 C 8 2, 10 3, 12 6 C 14 3, 16 2, 19 4 C 23 7, 20 13, 12 19 Z"/>
     </svg>
-    <svg class="doodle d-spark2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-      <path d="M12 2 v8 M12 14 v8 M2 12 h8 M14 12 h8"/>
+    <svg class="doodle d-spark2" viewBox="0 0 24 22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 19 C 4 13, 1 7, 5 4 C 8 2, 10 3, 12 6 C 14 3, 16 2, 19 4 C 23 7, 20 13, 12 19 Z"/>
     </svg>
     <svg class="doodle d-arrow" viewBox="0 0 80 50" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M5 8 q15 30 35 30 t35 -10"/>
@@ -892,7 +933,7 @@
           <div class="reveal-emoji">🧖‍♀️ 💆 ✨</div>
           <h3 class="reveal-title">A <em>Spa Retreat</em> for two</h3>
           <p class="reveal-desc">Some well-deserved relaxation, on us. You both earned it.</p>
-          <a href="spa-coupon.pdf" download="Alex-Joanna-Spa-Gift.pdf" class="download-btn" id="download-btn">
+          <a href="#" download="Alex-Joanna-Spa-Gift.pdf" class="download-btn" id="download-btn">
             <span>Download Coupon</span>
             <span class="arrow">→</span>
           </a>
@@ -915,14 +956,83 @@
 </div>
 
 <script>
-  // ─────────── PASSWORD ───────────
-  const SECRET = 'alexjoanna2025';
-  function checkPassword(e) {
+  // ─────────── PASSWORD + CLIENT-SIDE DECRYPTION ───────────
+  // The gift PDF is encrypted at rest as `spa-coupon.enc` with AES-GCM using
+  // a PBKDF2-derived key from the password. The password is never stored or
+  // hashed in this file — the only way to read the PDF is to enter the right
+  // password, which derives a key that successfully authenticates the GCM tag.
+  const ENCRYPTED_PATH = 'spa-coupon.enc';
+  const PBKDF2_ITERATIONS = 310000;
+  const SALT_BYTES = 16;
+  const IV_BYTES = 12;
+
+  let encryptedBlobPromise = null;
+  function loadEncryptedBlob() {
+    if (!encryptedBlobPromise) {
+      encryptedBlobPromise = fetch(ENCRYPTED_PATH)
+        .then(r => {
+          if (!r.ok) throw new Error('fetch failed: ' + r.status);
+          return r.arrayBuffer();
+        })
+        .then(buf => new Uint8Array(buf));
+    }
+    return encryptedBlobPromise;
+  }
+  // Warm the fetch so it's likely already in-flight by the time the password is submitted.
+  loadEncryptedBlob().catch(() => { /* will surface on submit */ });
+
+  async function deriveKey(password, salt) {
+    const material = await crypto.subtle.importKey(
+      'raw',
+      new TextEncoder().encode(password),
+      { name: 'PBKDF2' },
+      false,
+      ['deriveKey'],
+    );
+    return crypto.subtle.deriveKey(
+      { name: 'PBKDF2', salt, iterations: PBKDF2_ITERATIONS, hash: 'SHA-256' },
+      material,
+      { name: 'AES-GCM', length: 256 },
+      false,
+      ['decrypt'],
+    );
+  }
+
+  async function checkPassword(e) {
     e.preventDefault();
     const input = document.getElementById('password-input');
     const err = document.getElementById('error-msg');
-    if (input.value.trim().toLowerCase() === SECRET) {
-      err.textContent = '';
+    const btn = document.getElementById('unlock-btn');
+    const password = input.value;
+    if (!password) return;
+
+    err.textContent = '';
+    btn.disabled = true;
+    const originalLabel = btn.querySelector('span').textContent;
+    btn.querySelector('span').textContent = 'Opening…';
+
+    try {
+      const blob = await loadEncryptedBlob();
+      if (blob.byteLength < SALT_BYTES + IV_BYTES + 16) {
+        throw new Error('encrypted file is corrupt');
+      }
+      const salt = blob.slice(0, SALT_BYTES);
+      const iv = blob.slice(SALT_BYTES, SALT_BYTES + IV_BYTES);
+      const ciphertext = blob.slice(SALT_BYTES + IV_BYTES);
+
+      const key = await deriveKey(password, salt);
+      // AES-GCM throws OperationError if the auth tag doesn't verify —
+      // that's the signal the password was wrong.
+      const decrypted = await crypto.subtle.decrypt(
+        { name: 'AES-GCM', iv },
+        key,
+        ciphertext,
+      );
+
+      const pdfBlob = new Blob([decrypted], { type: 'application/pdf' });
+      const url = URL.createObjectURL(pdfBlob);
+      document.getElementById('download-btn').setAttribute('href', url);
+
       document.getElementById('lock-screen').classList.add('hidden');
       const main = document.getElementById('main-content');
       setTimeout(() => {
@@ -931,20 +1041,17 @@
         startPetals();
         initScratch();
       }, 500);
-    } else {
+    } catch (ex) {
       err.textContent = 'nope, try again 🌸';
       input.classList.add('shake');
       input.value = '';
       setTimeout(() => input.classList.remove('shake'), 500);
+      input.focus();
+    } finally {
+      btn.disabled = false;
+      btn.querySelector('span').textContent = originalLabel;
     }
   }
-
-  // ─────────── DATE ───────────
-  (function setDate() {
-    const d = new Date();
-    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-    document.getElementById('masthead-date').textContent = months[d.getMonth()] + ' ' + d.getFullYear();
-  })();
 
   // ─────────── TICKER ───────────
   (function buildTicker() {
@@ -952,9 +1059,9 @@
     const items = [
       'Congratulations Alex &amp; Joanna',
       'Eight Reasons To Celebrate',
-      'She Said Yes',
+      'The Big Day',
       'A Special Edition',
-      'Punta Cana · 2026',
+      'Peru · May 2026',
       'With Love From Your Team',
     ];
     const star = '<span class="star">✦</span>';
@@ -988,7 +1095,7 @@
       rot: rand(0, Math.PI * 2),
       rs: rand(-0.025, 0.025),
       op: rand(0.3, 0.65),
-      color: ['#f4b6b0','#d04a4a','#d6a24a','#8aa776','#c87a72'][Math.floor(Math.random()*5)],
+      color: ['#f4b6b0','#c14a5e','#d6a24a','#8aa776','#c87a72','#e8a9b1'][Math.floor(Math.random()*6)],
       life: 0, maxLife: rand(280, 480),
     };
   }
@@ -1099,8 +1206,8 @@
     const w = scratchCanvas._w, h = scratchCanvas._h;
     // base coating
     const grad = sctx.createLinearGradient(0, 0, w, h);
-    grad.addColorStop(0, '#d04a4a');
-    grad.addColorStop(0.5, '#a33333');
+    grad.addColorStop(0, '#c14a5e');
+    grad.addColorStop(0.5, '#8e2f44');
     grad.addColorStop(1, '#d6a24a');
     sctx.fillStyle = grad;
     sctx.fillRect(0, 0, w, h);
@@ -1187,7 +1294,7 @@
     const card = document.getElementById('scratch-card').getBoundingClientRect();
     const cx = card.left + card.width / 2;
     const cy = card.top + card.height / 2;
-    const colors = ['#d04a4a','#d6a24a','#8aa776','#f4b6b0','#9ec8d6','#1f1a17'];
+    const colors = ['#c14a5e','#d6a24a','#8aa776','#f4b6b0','#9ec8d6','#e8a9b1'];
     const parts = [];
     for (let i = 0; i < 110; i++) {
       const angle = rand(0, Math.PI * 2);
